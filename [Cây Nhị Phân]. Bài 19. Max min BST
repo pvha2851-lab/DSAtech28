@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int data;
+	node *left;
+	node *right;
+};
+node* makeNode(int x){
+	node *newNode=new node;
+	newNode->data=x;
+	newNode->left=NULL;
+	newNode->right=NULL;
+	return newNode;
+}
+node* insert(node *root,int x){
+	if(root==NULL)	return makeNode(x);
+	if(x<root->data)	root->left=insert(root->left,x);
+	else if(x>root->data)	root->right=insert(root->right,x);
+	return root;
+}
+int findMin(node *root){
+	while(root->left!=NULL){
+		root=root->left;
+	}
+	return root->data;
+}
+int findMax(node *root){
+	while(root->right!=NULL){
+		root=root->right;
+	}
+	return root->data;
+}
+int main(){
+	int N;
+	cin>>N;
+	vector<int> A(N);
+	node *root=NULL;
+	for(int i=0;i<N;i++){
+		cin>>A[i];
+	}
+	//A[0] la goc
+	for(int i=0;i<N;i++){
+		root=insert(root,A[i]);
+	}
+	cout<<findMax(root)<<" "<<findMin(root);
+	return 0;
+}
