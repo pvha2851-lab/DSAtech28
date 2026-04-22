@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> adj[1005];
+int n,m,s;
+bool visited[1005];
+void BFS(int u){
+	visited[u]=true;
+	queue<int> Q;
+	Q.push(u);
+	while(!Q.empty()){
+		int x=Q.front();Q.pop();
+		cout<<x<<" ";
+		for(int y:adj[x]){
+			if(!visited[y]){
+				visited[y]=true;
+				Q.push(y);
+			}
+		}
+	}
+}
+void nhap(){
+	cin>>n>>m>>s;
+	for(int i=0;i<m;i++){
+		int x,y;
+		cin>>x>>y;
+		adj[x].push_back(y);
+		
+	}
+	for(int i=1;i<=n;i++){
+		sort(adj[i].begin(),adj[i].end());
+	}
+	memset(visited,false,sizeof(visited));
+	BFS(s);
+}
+int main(){
+	nhap();
+	return 0;
+}
