@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> adj[1005];
+bool visited[1005];
+int n,m;
+void DFS(int u){
+	visited[u]=true;
+	for(int v:adj[u]){
+		if(!visited[v]){
+			DFS(v);
+		}
+	}
+}
+int tplt(){
+	int dem=0;
+	for(int i=1;i<=n;i++){
+		if(!visited[i]){
+			dem++;
+			DFS(i);
+		}
+	}
+	return dem;
+}
+int dinh_tru(){
+	int cc=tplt();
+	int res=0;
+	for(int i=1;i<=n;i++){
+		memset(visited,false,sizeof(visited));
+		visited[i]=true;
+		if(cc<tplt())	res++;
+	}
+	return res;
+}
+void nhap(){
+	cin>>n>>m;
+	for(int i=0;i<m;i++){
+		int x,y;
+		cin>>x>>y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
+	memset(visited,false,sizeof(visited));
+}
+int main(){
+	nhap();
+	cout<<dinh_tru();
+	return 0;
+}
