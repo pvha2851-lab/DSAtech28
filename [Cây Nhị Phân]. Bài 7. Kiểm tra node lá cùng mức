@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int data;
+	node *left;
+	node *right;
+};
+node* makeNode(int x){
+	node *newNode=new node;
+	newNode->data=x;
+	newNode->left=NULL;
+	newNode->right=NULL;
+	return newNode;
+}
+node* findNode(node *root,int x){
+	if(root==NULL)	return NULL;
+	if(root->data==x)	return root;
+	node *left=findNode(root->left,x);
+	if(left!=NULL)	return left;
+	return findNode(root->right,x);
+}
+bool checksameLevel(node *root,int level,int &leafLevel){
+	if(root==NULL)	return true;
+	//neu la node la
+	if(root->left==NULL&&root->right==NULL){
+		if(leafLevel==-1){
+			leafLevel=level;
+		}
+		return leafLevel==level;
+	}
+	return checksameLevel(root->left,level+1,leafLevel)&&checksameLevel(root->right,level+1,leafLevel);
+}
+int main(){
+	node *root=NULL;
+	int N;
+	cin>>N;cin.ignore();
+	set<int> child,parent;
+	for(int i=0;i<N;i++){
+		int x,y;char z;
+		cin>>x>>y>>z;
+		parent.insert(x);
+		child.insert(y);
+		if(root==NULL)	root=makeNode(x);
+		node *cha=findNode(root,x);
+		if(cha==NULL)	cha=makeNode(x);
+		node *con=makeNode(y);
+		if(z=='L')	cha->left=con;
+		else cha->right=con;
+	}
+	int rootVal;
+	for(int x:parent){
+		if(child.count(x)==0){
+			rootVal=x;
+			break;
+		}
+	}
+	root=findNode(root,rootVal);
+	int leafLevel=-1;
+	if(checksameLevel(root,0,leafLevel))	cout<<"YES";
+	else cout<<"NO";
+	return 0;	
+}
