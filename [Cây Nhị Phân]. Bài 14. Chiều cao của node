@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int data;
+	node *left;
+	node *right;
+};
+node *makeNode(int x){
+	node *newNode=new node;
+	newNode->data=x;
+	newNode->left=NULL;
+	newNode->right=NULL;
+	return newNode;
+}
+node* findNode(node *root,int x){
+	if(root==NULL)	return NULL;
+	if(root->data==x)	return root;
+	node *left=findNode(root->left,x);
+	if(left!=NULL)	return left;
+	return findNode(root->right,x);
+}
+map<int,int> depth;
+void DFS(node *root,int h){
+	if(root==NULL)	return;
+	depth[root->data]=h;
+	DFS(root->left,h+1);
+	DFS(root->right,h+1);
+}
+int main(){
+	int N;
+	cin>>N;cin.ignore();
+	set<int> parent,child;
+	node *root=NULL;
+	for(int i=0;i<N;i++){
+		int x,y;char z;
+		cin>>x>>y>>z;
+		parent.insert(x);
+		child.insert(y);
+		if(root==NULL)	root=makeNode(x);
+		node *cha=findNode(root,x);
+		if(cha==NULL)	cha=makeNode(x);
+		node *con=makeNode(y);
+		if(z=='L')	cha->left=con;
+		else		cha->right=con;
+	}
+	int rootVal;
+	for(int x:parent){
+		if(child.count(x)==0){
+			rootVal=x;
+			break;
+		}
+	}
+	root=findNode(root,rootVal);
+	DFS(root,0);
+	for(auto it:depth){
+		cout<<it.second<<" ";
+	}
+	return 0;
+}
